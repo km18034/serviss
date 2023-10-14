@@ -1,0 +1,55 @@
+.nav-bar {
+    background-color: #839FEF;
+    margin-bottom: 70px;
+    color: white;
+}
+
+.nav-bar .main-menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.nav-bar .login-btn-container .login-btn {
+    background-color: #396DFF;
+    display: block;
+    height: 100%;
+    padding: 20px 0;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+}
+
+.nav-bar .login-btn-container .login-btn:hover,
+.nav-bar .main-menu ul li a:hover {
+    background-color: #3059c9;
+}
+
+.nav-bar .main-menu ul li a,
+.nav-bar .logo a,
+.action-btn {
+   color: white; 
+   text-decoration: none;
+}
+
+.nav-bar .main-menu ul li a {
+    padding: 20px 15px;
+}
+
+.nav-bar .logo a {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.action-btn {
+    padding: 5px 15px;
+    background-color: #3059c9;
+    border-radius: 20px;
+}
+
+.greeting {
+    padding: 20px 15px;
+    border-left: 1px solid white;
+    text-align: center;
+}
