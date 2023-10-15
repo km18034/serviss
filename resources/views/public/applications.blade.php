@@ -1,11 +1,14 @@
 @extends('layouts.master')
 @section('content')
     <div class="container">
+        @if (session('success')) 
+            <h6 class="alert alert-success">{{ session('success') }}</h6>
+        @endif
         <div class="d-flex align-items-center">
             <h1>Applications list</h1>
-            <a href="/create-application" class="ms-3 action-btn">Create New Application</a>
+            <a href="{{ route('create-application') }}" class="ms-3 action-btn">Create New Application</a>
         </div>
-        
+        @if (!empty($applications))
         <table class="table">
             <thead>
                 <tr>
@@ -26,7 +29,7 @@
                     <td>{{ $application->date }}</td>
                     <td>{{ $application->status }}</td>
                     <td>
-                        <form action="/delete-application/{{$application->id}}" method="POST">
+                        <form action="{{ route('delete-application', ['id' => $application->id]) }}" method="POST">
                             {{ csrf_field() }}
                             <button type="submit" class="btn btn-link">Delete</button>
                         </form>
@@ -35,5 +38,8 @@
                 @endforeach
             </tbody>
         </table>
+        @else
+        <h4>You Do Not Have Any Applications Yet!</h4>
+        @endif
     </div>
 @stop

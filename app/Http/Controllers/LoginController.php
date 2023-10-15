@@ -24,6 +24,11 @@ class LoginController extends BaseController
         $password = $request->input('password');
        
         $customer = Customer::where('email', $email)->first();
+
+        if(!$customer){
+            return redirect()->back()->with('error', 'Wrong Login Data!');
+        }
+
         $customer_password = $customer->password;
         $password_verified = password_verify($password, $customer_password);
 
@@ -32,7 +37,7 @@ class LoginController extends BaseController
 
             return redirect('/applications');
         } else {
-            return redirect('/');
+            return redirect()->back()->with('error', 'Wrong Login Data!');
         }
     }
 

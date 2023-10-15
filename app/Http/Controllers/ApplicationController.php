@@ -22,7 +22,12 @@ class ApplicationController extends Controller
 
     public function indexForm()
     {
-        return view('public.create-application');
+        $customer_id = session('customer_id');
+        $customer = Customer::where("id", $customer_id)->first();
+        
+        return view('public.create-application')->with(compact([
+            'customer',
+        ]));
     }
 
     public function submit(Request $request)
@@ -34,7 +39,7 @@ class ApplicationController extends Controller
         $application->description = $request->input('description');
         $application->save();
         
-        return redirect('/applications');
+        return redirect('/applications')->with('success', 'Application Created Successfully!');
     }
 
     public function delete($id) //funkcija, lai dzestu application
@@ -42,6 +47,6 @@ class ApplicationController extends Controller
         $application = Application::where('id', $id)->first();
         $application->delete();
         
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Application Deleted Successfully!');
     }
 }

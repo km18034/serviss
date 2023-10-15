@@ -5,34 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{asset('css/styles.css')}}">
-    <title>Service</title>
+    <title>Service Admin</title>
 </head>
 <body>
-    <div class="nav-bar">
+<div class="nav-bar">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-3 logo">
-                    <a href="/">Service</a>
+                    <a href="{{ route('admin-dashboard') }}">Service</a>
                 </div>
-                <div class="main-menu {{ session()->has('customer_id') ? 'col-md-5' : 'col-md-7' }}">
+                <div class="main-menu col-md-5">
                     <ul>
-                        <li><a href="/">Services</a></li>
-                        <li><a href="{{ route('mechanics-index') }}">Mechanics</a></li>
-                        @if(session()->has('customer_id'))
-                            <li><a href="{{ route('applications-index') }}">Applications</a></li>
-                            <li><a href="{{ route('profile-index') }}">Profile</a></li>
-                        @endif
+                        <li><a href="{{ route('admin-parts-index') }}">Spare Parts</a></li>
                     </ul>
                 </div>
-                @if(session()->has('customer_id'))
-                <div class="col-md-2 greeting">Hello, {{ $customer->name }}!</div>
-                @endif
+                <div class="col-md-2 greeting">Hello, {{ $admin_user->name }}!</div>
                 <div class="col-md-2 login-btn-container">
-                @if(session()->has('customer_id'))
-                    <a href="{{ route('submit-logout') }}" class="login-btn">Logout</a>
-                @else
-                    <a href="{{ route('login-index') }}" class="login-btn">Login</a>
-                @endif
+                    <a href="{{ route('admin-logout') }}" class="login-btn">Logout</a>
                 </div>
             </div>
         </div>

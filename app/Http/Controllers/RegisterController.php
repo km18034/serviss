@@ -26,7 +26,7 @@ class RegisterController extends BaseController
         $customer->save();
         session(['customer_id'=> $customer->id]);
 
-        return redirect('/profile');
+        return redirect('/applications');
     }
 
 }
