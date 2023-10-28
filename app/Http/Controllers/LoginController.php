@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class LoginController extends BaseController
 {
-    public function index()
+    public function index()         
     {
         return view('public.login');
     }

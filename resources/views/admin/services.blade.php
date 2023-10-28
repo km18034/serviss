@@ -3,10 +3,10 @@
     <div class="container">
         @if (session('success')) 
             <h6 class="alert alert-success">{{ session('success') }}</h6>
-        @endif
+        @endif 
         <div class="d-flex align-items-center">
-            <h1>Spare parts</h1>
-            <a href="{{ route('admin-add-form-index') }}" class="ms-3 action-btn">Add New Spare Part</a>
+            <h1>Services</h1>
+            <a href="{{ route('admin-add-form-index-service') }}" class="ms-3 action-btn">Add New Service</a>
         </div>
         <table class="table">
             <thead>
@@ -16,25 +16,21 @@
                     <th scope="col">Image</th>
                     <th scope="col">Title</th>
                     <th scope="col">Description</th>
-                    <th scope="col">Auto Brand</th>
-                    <th scope="col">Amount</th>
-                    <th scope="col">Is Aviable</th>
+                    <th scope="col">Is Public</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
-            @foreach($spare_parts as $part)
+            @foreach($services as $service)
                 <tr>
-                    <th scope="row">{{ $part->id }}</th>
-                    <td><a href="{{ route('admin-edit-part', ['id' => $part->id]) }}">Edit</a></td>
-                    <td><img height="50" src="{{ asset('/storage/images/' . $part->image_name) }}" alt="img"></td>
-                    <td>{{ $part->title}}</td>
-                    <td>{{ $part->description }}</td>
-                    <td>{{ $part->auto_brand }}</td>
-                    <td>{{ $part->amount }}</td>
-                    <td>{{ $part->is_aviable }}</td>
+                    <th scope="row">{{ $service->id }}</th>
+                    <td><a href="{{ route('admin-edit-service', ['id' => $service->id]) }}">Edit</a></td>
+                    <td><img height="50" src="{{ asset('/storage/images/' . $service->image_name) }}" alt="img"></td>
+                    <td>{{ $service->title}}</td>
+                    <td>{{ $service->description }}</td>
+                    <td>{{ $service->is_public }}</td>
                     <td>
-                        <form action="{{ route('admin-delete-part', ['id' => $part->id]) }}" method="POST">
+                        <form action="{{ route('admin-delete-service', ['id' => $service->id]) }}" method="POST">
                             {{ csrf_field() }}
                             <button type="submit" class="btn btn-link">Delete</button>
                         </form>

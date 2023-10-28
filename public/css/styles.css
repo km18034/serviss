@@ -4,6 +4,10 @@
     color: white;
 }
 
+.nav-bar.admin {
+    background-color: #b1b1b1;
+}
+
 .nav-bar .main-menu ul {
     list-style-type: none;
     margin: 0;
@@ -21,9 +25,18 @@
     text-decoration: none;
 }
 
+.nav-bar.admin .login-btn-container .login-btn {
+    background-color: #7c7c7c;
+}
+
 .nav-bar .login-btn-container .login-btn:hover,
 .nav-bar .main-menu ul li a:hover {
     background-color: #3059c9;
+}
+
+.nav-bar.admin .login-btn-container .login-btn:hover,
+.nav-bar.admin .main-menu ul li a:hover {
+    background-color: #686868;
 }
 
 .nav-bar .main-menu ul li a,
@@ -61,4 +74,8 @@
 
 .profile .label {
     font-weight: 500;
+}
+
+.card-img-top {
+    object-fit: cover;
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ServicesController;
 use App\Http\Controllers\Admin\SparePartsController;
 use App\Http\Controllers\ApplicationController;
 use Illuminate\Support\Facades\Route;
@@ -50,12 +51,19 @@ Admin Routes
 
 Route::get('/admin', [AdminController::class, 'index'])->name('admin-index');
 Route::post('/admin/submit-login', [AdminController::class, 'login'])->name('admin-submit-login');
-Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin-dashboard');
-Route::get('/admin/logout', [AdminController::class, 'logout'])->name('admin-logout');
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin-dashboard')->middleware('is_admin');
+Route::get('/admin/logout', [AdminController::class, 'logout'])->name('admin-logout')->middleware('is_admin');
 
-Route::get('/admin/spare-parts', [SparePartsController::class, 'index'])->name('admin-parts-index');
-Route::get('/admin/add-new', [SparePartsController::class, 'addFormIndex'])->name('admin-add-form-index');
-Route::post('/admin/submit-parts', [SparePartsController::class, 'create'])->name('admin-submit-parts');
-Route::post('/admin/delete-part/{id}', [SparePartsController::class, 'delete'])->name('admin-delete-part');
-Route::get('/admin/edit-part/{id}', [SparePartsController::class, 'editIndex'])->name('admin-edit-part');
-Route::post('/admin/submit-edit-part/{id}', [SparePartsController::class, 'update'])->name('admin-submit-edit-part');
+Route::get('/admin/spare-parts', [SparePartsController::class, 'index'])->name('admin-parts-index')->middleware('is_admin');
+Route::get('/admin/add-new-part', [SparePartsController::class, 'addFormIndex'])->name('admin-add-form-index')->middleware('is_admin');
+Route::post('/admin/submit-parts', [SparePartsController::class, 'create'])->name('admin-submit-parts')->middleware('is_admin');
+Route::post('/admin/delete-part/{id}', [SparePartsController::class, 'delete'])->name('admin-delete-part')->middleware('is_admin');
+Route::get('/admin/edit-part/{id}', [SparePartsController::class, 'editIndex'])->name('admin-edit-part')->middleware('is_admin');
+Route::post('/admin/submit-edit-part/{id}', [SparePartsController::class, 'update'])->name('admin-submit-edit-part')->middleware('is_admin');
+
+Route::get('/admin/services', [ServicesController::class, 'index'])->name('admin-services-index')->middleware('is_admin');
+Route::get('/admin/add-new-service', [ServicesController::class, 'addFormIndex'])->name('admin-add-form-index-service')->middleware('is_admin');
+Route::post('/admin/submit-service', [ServicesController::class, 'create'])->name('admin-submit-service')->middleware('is_admin');
+Route::post('/admin/delete-service/{id}', [ServicesController::class, 'delete'])->name('admin-delete-service')->middleware('is_admin');
+Route::get('/admin/edit-service/{id}', [ServicesController::class, 'editIndex'])->name('admin-edit-service')->middleware('is_admin');
+Route::post('/admin/submit-edit-service/{id}', [ServicesController::class, 'update'])->name('admin-submit-edit-service')->middleware('is_admin');
