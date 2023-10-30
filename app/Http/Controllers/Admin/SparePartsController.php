@@ -13,10 +13,10 @@ class SparePartsController extends BaseController
 {
     public function index()
     {
-        $spare_parts = SparePart::all();
-        $admin_user = AdminUser::find(session('admin_id'));
+        $spare_parts = SparePart::all();    // no SparePart modeļa tiek paņemtas visas vērtības
+        $admin_user = AdminUser::find(session('admin_id'));    // pēc admin_id sesijas tiek atrasts administrators, kurš pieslēdzies sistēmai
 
-        return view('admin.spare-parts')->with(compact([
+        return view('admin.spare-parts')->with(compact([    // tiek atgriezts spare-parts skats un tiek padoti 2 mainīgie
             'spare_parts', 
             'admin_user',
         ]));
@@ -24,27 +24,28 @@ class SparePartsController extends BaseController
 
     public function addFormIndex()
     {
-        $admin_user = AdminUser::find(session('admin_id'));
+        $admin_user = AdminUser::find(session('admin_id'));     //  pēc admin_id sesijas tiek atrasts administrators, kurš pieslēdzies sistēmai
 
-        return view('admin.add-spare-part')->with(compact([
+        return view('admin.add-spare-part')->with(compact([     // tiek atgriezts add-spare-part skats un tiek padots 1 mainīgais
             'admin_user',
         ]));
     }
 
-    public function editIndex($id) 
+    public function editIndex($id)  // no URL http://serviss.local/admin/edit-part/1 paņemtais id
     {
-        $part = SparePart::find($id);
-        $admin_user = AdminUser::find(session('admin_id'));
+        $part = SparePart::find($id);   // SparePart DB tiek meklēts ieraksts ar konkrētu id
+        $admin_user = AdminUser::find(session('admin_id')); //  pēc admin_id sesijas tiek atrasts administrators, kurš pieslēdzies sistēmai
 
-        return view('admin.edit-spare-part')->with(compact([
+        return view('admin.edit-spare-part')->with(compact([    // tiek atgriezts edit-spare-part skats un tiek padoti 2 mainīgie
             'part',
             'admin_user',
         ]));
     }
 
-    public function create(Request $request)
+    // funkcija jauna Spare Part pievienošanai
+    public function create(Request $request)  // $request satur informāciju par visiem ievades laukiem
     {
-        $request->validate([
+        $request->validate([       // tiek validēti ievades lauki
             'title' => 'required|max:255',
             'description' => 'required',
             'auto_brand' => 'required',
@@ -52,67 +53,70 @@ class SparePartsController extends BaseController
             'image' => 'required|image|mimes:jpeg,png,jpg|max:2048', 
         ]);
 
-        $file = $request->file('image');
+        $file = $request->file('image');    // mainīgajam $file tiek piešķirta 'image' vērtība
 
-        $file_name = time() . '_' . $file->getClientOriginalName();
-        Storage::disk('public')->put("images/".$file_name, File::get($file));
+        $file_name = time() . '_' . $file->getClientOriginalName(); // tiek piešķirts random nosaukums
+        Storage::disk('public')->put("images/".$file_name, File::get($file));   // tiek saglabāts fails storage/app/public/images ar jauno nosaukumu
 
-        $is_aviable = $request->input('is_aviable') ? 1 : 0;
+        $is_aviable = $request->input('is_aviable') ? 1 : 0;    // ja is_aviable ir true, pieširam vērtību 1, ja false - piešķiram 0
 
-        $part = New SparePart();
-        $part->title = $request->input('title');
-        $part->description = $request->input('description');
-        $part->auto_brand = $request->input('auto_brand');
-        $part->amount = $request->input('amount');
-        $part->is_aviable = $is_aviable;
-        $part->image_name = $file_name;
+        $part = New SparePart();    // tiek izveidots jauns ieraksts 
+        $part->title = $request->input('title'); // title kolonnā tiek piešķirta vērtība no title ievadlauka
+        $part->description = $request->input('description');    // description kolonnā tiek piešķirta vērtība no description ievadlauka
+        $part->auto_brand = $request->input('auto_brand');     // auto_brand kolonnā tiek piešķirta vērtība no auto_brand ievadlauka
+        $part->amount = $request->input('amount');     // amount kolonnā tiek piešķirta vērtība no amount ievadlauka
+        $part->is_aviable = $is_aviable;    // is_aviable kolonnā tiek piešķirta vērtība no is_aviable ievadlauka
+        $part->image_name = $file_name;     // image_name kolonnā saglabājam faila nosaukumu
 
-        $part->save();
-        return redirect('/admin/spare-parts')->with('success', 'Spare Part Created Successfully!');
+        $part->save(); // ieraksts tiek saglabāts DB
+        return redirect('/admin/spare-parts')   // pēc ieraksta saglabāšanas lietotājs tiek pārvirzīts uz spare-parts skatu
+                ->with('success', 'Spare Part Created Successfully!');  // tiek atrādīts paziņojums par veiksmīgu ieraksta izveidi
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id)   // $request satur informāciju par visiem ievades laukiem, $id tiek ņemts no: '/admin/submit-edit-part/{id}' 
     {
-        $part = SparePart::find($id);
-        $file = $request->file('image');
+        $part = SparePart::find($id);   // SparePart DB tiek meklēts ieraksts ar konkrētu id
+        $file = $request->file('image'); // mainīgajam $file tiek piešķirta 'image' vērtība
 
-        if ($file) {
-            $file_path = "images/" . $part->image_name;
-
-            if (Storage::disk("public")->exists($file_path)) {
-                Storage::disk("public")->delete($file_path);
+        if ($file) {    // notiek pārbaude vai lietotājs ir mēģinājis augšupielādēt failu
+            $file_path = "images/" . $part->image_name; // mainīgajā $file_path tiek piešķirta daļa no ceļa "images/file_name" (eksistējoša vērtība DB)
+           
+            if (Storage::disk("public")->exists($file_path)) {  // pārbauda vai fails joprojām eksistē 
+                Storage::disk("public")->delete($file_path);    // tiek izdzēsts eksistējošs fails
             }   
             
-            $file_name = time() . '_' . $file->getClientOriginalName();
-            Storage::disk('public')->put("images/".$file_name, File::get($file));
+            $file_name = time() . '_' . $file->getClientOriginalName(); // jaunā faila nosaukums
+            Storage::disk('public')->put("images/".$file_name, File::get($file)); // tiek saglabāts jaunais fails storage/app/public/images 
 
-            $part->image_name = $file_name;
+            $part->image_name = $file_name; // kolonnā image_name tiek saglabāts jaunais file_name
         }
 
-        $is_aviable = $request->input('is_aviable') ? 1 : 0;
+        $is_aviable = $request->input('is_aviable') ? 1 : 0; // ja is_aviable ir true, pieširam vērtību 1, ja false - piešķiram 0
 
-        $part->title = $request->input('title');
-        $part->description = $request->input('description');
-        $part->auto_brand = $request->input('auto_brand');
-        $part->amount = $request->input('amount');
-        $part->is_aviable = $is_aviable;
+        $part->title = $request->input('title'); //  kolonnā (DB spare_parts) title tiek piešķirta vērtība no ievadlauka title 
+        $part->description = $request->input('description'); // kolonnā description tiek piešķirta vērtība no ievadlauka description
+        $part->auto_brand = $request->input('auto_brand'); // kolonnā auto_brand tiek piešķirta vērtība no ievadlauka auto_brand
+        $part->amount = $request->input('amount'); // kolonnā amount tiek piešķirta vērtība no ievadlauka amount
+        $part->is_aviable = $is_aviable; // kolonnā is_aviable tiek piešķirta is_aviable ,mainīgā vērtība
 
-        $part->save();
+        $part->save(); // tiek saglabāts spare_parts DB
 
-        return redirect("/admin/spare-parts")->with('success', 'Application Updated Successfully!');
+        return redirect("/admin/spare-parts") // pēc ieraksta saglabāšanas lietotājs tiek pārvirzīts uz spare-parts skatu
+                ->with('success', 'Application Updated Successfully!'); // tiek atrādīt paziņojums par veiksmīgu ieraksta editēšanu
     }
 
-    public function delete($id)
+    public function delete($id) // $id tiek ņemts no URL /admin/delete-part/{id}
     {
-        $part = SparePart::where('id', $id)->first();
-        $part->delete();
+        $part = SparePart::where('id', $id)->first(); // modulī SparePart tiek meklēts pirmā vērtība, kas atbilst id
+        $part->delete(); // ieraksts tiek izdzēsts
 
-        $file_path = "images/" . $part->image_name;
+        $file_path = "images/" . $part->image_name;  // mainīgajā $file_path tiek piešķirta daļa no ceļa "images/file_name" (eksistējoša vērtība DB)
 
-        if (Storage::disk("public")->exists($file_path)) {
-            Storage::disk("public")->delete($file_path);
+        if (Storage::disk("public")->exists($file_path)) { // pārbauda vai fails joprojām eksistē 
+            Storage::disk("public")->delete($file_path);   // tiek izdzēsts eksistējošs fails
         }
 
-        return redirect()->back()->with('success', 'Application Deleted Successfully!');
+        return redirect()->back() // back() nozīmē, ka no URL /admin/delete-part/{id} lietotājs tiks pārvirzīts uz vienu URL atpakaļ, kas bija /admin/spare-parts
+                ->with('success', 'Application Deleted Successfully!'); // tiek atrādīts paziņojums par veiksmīgu dzēšanu
     }
 }
