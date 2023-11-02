@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminRegisterController;
 use App\Http\Controllers\Admin\ServicesController;
 use App\Http\Controllers\Admin\SparePartsController;
 use App\Http\Controllers\ApplicationController;
@@ -67,3 +68,10 @@ Route::post('/admin/submit-service', [ServicesController::class, 'create'])->nam
 Route::post('/admin/delete-service/{id}', [ServicesController::class, 'delete'])->name('admin-delete-service')->middleware('is_admin');
 Route::get('/admin/edit-service/{id}', [ServicesController::class, 'editIndex'])->name('admin-edit-service')->middleware('is_admin');
 Route::post('/admin/submit-edit-service/{id}', [ServicesController::class, 'update'])->name('admin-submit-edit-service')->middleware('is_admin');
+
+Route::get('/admin/users', [AdminRegisterController::class, 'index'])->name('admin-users-index')->middleware('is_admin');
+Route::get('/admin/add-new-user', [AdminRegisterController::class, 'addFormIndex'])->name('admin-user-add-index')->middleware('is_admin');
+Route::post('/admin/submit-user', [AdminRegisterController::class, 'create'])->name('admin-submit-user')->middleware('is_admin');
+Route::post('/admin/delete-user/{id}', [AdminRegisterController::class, 'delete'])->name('admin-delete-user')->middleware('is_admin');
+Route::get('/admin/edit-user/{id}', [AdminRegisterController::class, 'editIndex'])->name('admin-edit-user')->middleware('is_admin');
+Route::post('/admin/submit-edit-user/{id}', [AdminRegisterController::class, 'update'])->name('admin-submit-edit-user')->middleware('is_admin');

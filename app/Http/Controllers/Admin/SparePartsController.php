@@ -69,6 +69,7 @@ class SparePartsController extends BaseController
         $part->image_name = $file_name;     // image_name kolonnā saglabājam faila nosaukumu
 
         $part->save(); // ieraksts tiek saglabāts DB
+        
         return redirect('/admin/spare-parts')   // pēc ieraksta saglabāšanas lietotājs tiek pārvirzīts uz spare-parts skatu
                 ->with('success', 'Spare Part Created Successfully!');  // tiek atrādīts paziņojums par veiksmīgu ieraksta izveidi
     }

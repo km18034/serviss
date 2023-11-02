@@ -17,9 +17,8 @@
                 <div class="main-menu col-md-5 d-flex">
                     <ul>
                         <li><a href="{{ route('admin-parts-index') }}">Spare Parts</a></li>
-                    </ul>
-                    <ul>
                         <li><a href="{{ route('admin-services-index') }}">Services</a></li>
+                        <li><a href="{{ route('admin-users-index') }}">Users</a></li>
                     </ul>
                 </div>
                 <div class="col-md-2 greeting">Hello, {{ $admin_user->name }}!</div>
