@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\AdminUser;
+use App\Models\Application;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -44,10 +45,29 @@ class AdminController extends BaseController
     public function dashboard()
     {
         $admin_user = AdminUser::find(session('admin_id'));
+        $applications = Application::all();
 
         return view('admin.dashboard')->with(compact([
             'admin_user',
+            'applications',
         ]));
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $application = Application::find($id);
+        $application->status = $request->input('status');
+
+        $application->save();
+        return redirect()->back()->with('success', 'Application Status Updated Successfully!');
+    }
+
+    public function deleteApplication($id)
+    {
+        $application = Application::where('id', $id)->first();
+        $application->delete();
+        
+        return redirect()->back()->with('success', 'Application Deleted Successfully!');
     }
 
     public function logout()

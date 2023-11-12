@@ -79,3 +79,8 @@
 .card-img-top {
     object-fit: cover;
 }
+
+a.disabled {
+    pointer-events: none;
+    background-color: #bbbbbb;
+}

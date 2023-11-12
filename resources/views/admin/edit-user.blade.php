@@ -35,7 +35,7 @@
                 </div>
                 <div class="form-group my-2">
                     <label>Password</label>
-                    <input type="text" class="form-control" placeholder="Enter Password" name="password" value="{{ $user->password }}">
+                    <input type="password" class="form-control" placeholder="Enter Password" name="password">
                 </div>
                 <div class="form-group my-2">
                     <label>Role</label>

@@ -9,6 +9,24 @@
             <form action="{{ route('submit-application') }}" method="POST">
                 {{ csrf_field() }}
                 <div class="form-group my-2">
+                    <label>Service</label>
+                    <select class="form-select" name="service_id">
+                        <option selected value="">Select Service</option>
+                        @foreach($services as $service)
+                            <option value="{{ $service->id }}">{{ $service->title }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group my-2">
+                    <label>Mechanic</label>
+                    <select class="form-select" name="mechanic_id">
+                        <option selected value="">Select Mechanic</option>
+                        @foreach($mechanics as $mechanic)
+                            <option value="{{ $mechanic->id }}">{{ $mechanic->name }} {{ $mechanic->surname }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group my-2">
                     <label>Auto Brand</label>
                     <input type="text" class="form-control" placeholder="Enter Auto Brand" name="auto_brand">
                 </div>
@@ -20,6 +38,7 @@
                     <label>Description</label>
                     <textarea class="form-control" rows="3" name="description"></textarea>
                 </div>
+
                 <button type="submit" class="btn btn-primary my-3">Submit</button>
             </form>
         </div>

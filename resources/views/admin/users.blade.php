@@ -6,7 +6,7 @@
         @endif
         <div class="d-flex align-items-center">
             <h1>Users</h1>
-            <a href="{{ route('admin-user-add-index') }}" class="ms-3 action-btn">Add User</a>
+            <a href="{{ route('admin-user-add-index') }}" class="ms-3 action-btn {{ $admin_user->role === 'mechanic' ? 'disabled' : '' }}">Add User</a>
         </div>
         <table class="table">
             <thead>
@@ -25,7 +25,7 @@
             @foreach($users as $user)
                 <tr>
                     <th scope="row">{{ $user->id }}</th>
-                    <td><a href="{{ route('admin-edit-user', ['id' => $user->id]) }}">Edit</a></td>
+                    <td><a href="{{ route('admin-edit-user', ['id' => $user->id]) }}" class="btn btn-primary {{ $admin_user->role === 'mechanic' ? 'disabled' : '' }}">Edit</a></td>
                     <td>{{ $user->name}}</td>
                     <td>{{ $user->surname }}</td>
                     <td>{{ $user->email }}</td>
@@ -34,7 +34,7 @@
                     <td>
                         <form action="{{ route('admin-delete-user', ['id' => $user->id]) }}" method="POST">
                             {{ csrf_field() }}
-                            <button type="submit" class="btn btn-link">Delete</button>
+                            <button type="submit" class="btn btn-danger" @disabled($admin_user->role === 'mechanic')>Delete</button>
                         </form>
                     </td>
                 </tr>

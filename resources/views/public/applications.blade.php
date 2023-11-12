@@ -13,6 +13,8 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Service</th>
+                    <th scope="col">Mechanic</th>
                     <th scope="col">Auto Brand</th>
                     <th scope="col">Description</th>
                     <th scope="col">Date</th>
@@ -24,6 +26,8 @@
                 @foreach($applications as $application)
                 <tr>
                     <th scope="row">{{ $application->id }}</th>
+                    <td>{{ $application->service->title }}</td>
+                    <td>{{ $application->mechanic->name }} {{ $application->mechanic->surname }} <div>{{ $application->mechanic->phone }}</div></td>
                     <td>{{ $application->auto_brand }}</td>
                     <td>{{ $application->description }}</td>
                     <td>{{ $application->date }}</td>
@@ -31,7 +35,7 @@
                     <td>
                         <form action="{{ route('delete-application', ['id' => $application->id]) }}" method="POST">
                             {{ csrf_field() }}
-                            <button type="submit" class="btn btn-link">Delete</button>
+                            <button type="submit" class="btn btn-danger" @disabled($application->status !== 'recieved')>Delete</button>
                         </form>
                     </td>
                 </tr>

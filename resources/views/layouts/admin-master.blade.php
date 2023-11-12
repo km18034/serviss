@@ -19,6 +19,7 @@
                         <li><a href="{{ route('admin-parts-index') }}">Spare Parts</a></li>
                         <li><a href="{{ route('admin-services-index') }}">Services</a></li>
                         <li><a href="{{ route('admin-users-index') }}">Users</a></li>
+                        <li><a href="{{ route('admin-dashboard') }}">Applications</a></li>
                     </ul>
                 </div>
                 <div class="col-md-2 greeting">Hello, {{ $admin_user->name }}!</div>

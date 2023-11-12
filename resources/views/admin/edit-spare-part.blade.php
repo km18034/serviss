@@ -19,27 +19,29 @@
                 {{ csrf_field() }}
                 <div class="form-group my-2">
                     <label>Title</label>
-                    <input type="text" class="form-control" placeholder="Enter Spare Part Title" name="title" value="{{ $part->title }}">
+                    <input type="text" class="form-control" placeholder="Enter Spare Part Title" name="title" value="{{ $part->title }}" @disabled($admin_user->role === 'mechanic')>
                 </div>
                 <div class="form-group my-2">
-                    <label>Image</label>
+                    <label>Image</label><br>
                     <img height="100" src="{{ asset('/storage/images/' . $part->image_name) }}" alt="img">
-                    <input type="file" class="form-control" name="image">
+                    @if($admin_user->role !== 'mechanic')
+                        <input type="file" class="form-control" name="image">
+                    @endif
                 </div>
                 <div class="form-group my-2">
                     <label>Description</label>
-                    <input type="text" class="form-control" rows="3" name="description" value="{{ $part->description }}">
+                    <input type="text" class="form-control" rows="3" name="description" value="{{ $part->description }}" @disabled($admin_user->role === 'mechanic')>
                 </div>
                 <div class="form-group my-2">
                     <label>Auto Brand</label>
-                    <input type="text" class="form-control" placeholder="Enter Auto Brand" name="auto_brand" value="{{ $part->auto_brand }}">
+                    <input type="text" class="form-control" placeholder="Enter Auto Brand" name="auto_brand" value="{{ $part->auto_brand }}" @disabled($admin_user->role === 'mechanic')>
                 </div>
                 <div class="form-group my-2">
                     <label>Amount</label>
                     <input type="text" class="form-control" placeholder="Enter Spare Part Amount" name="amount" value="{{ $part->amount }}">
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="true" id="flexCheckChecked" name="is_aviable" @checked($part->is_aviable)>
+                    <input class="form-check-input" type="checkbox" value="true" id="flexCheckChecked" name="is_aviable" @checked($part->is_aviable) @disabled($admin_user->role === 'mechanic')>
                     <label class="form-check-label" for="flexCheckChecked">
                     Is Aviable
                     </label>

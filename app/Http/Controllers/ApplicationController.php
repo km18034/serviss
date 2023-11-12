@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminUser;
 use App\Models\Customer;
+use App\Models\Service;
 use App\Models\Application;
 use Illuminate\Http\Request;
 
@@ -24,9 +26,13 @@ class ApplicationController extends Controller
     {
         $customer_id = session('customer_id');
         $customer = Customer::where("id", $customer_id)->first();
+        $services = Service::where("is_public", true)->get();
+        $mechanics = AdminUser::where("role", 'mechanic')->get();
         
         return view('public.create-application')->with(compact([
             'customer',
+            'services',
+            'mechanics',
         ]));
     }
 
@@ -37,6 +43,8 @@ class ApplicationController extends Controller
         $application->auto_brand = $request->input('auto_brand');
         $application->date = $request->input('date');
         $application->description = $request->input('description');
+        $application->service_id = $request->input('service_id');
+        $application->mechanic_id = $request->input('mechanic_id');
         $application->save();
         
         return redirect('/applications')->with('success', 'Application Created Successfully!');
