@@ -20,6 +20,7 @@
                         <li><a href="{{ route('admin-services-index') }}">Services</a></li>
                         <li><a href="{{ route('admin-users-index') }}">Users</a></li>
                         <li><a href="{{ route('admin-dashboard') }}">Applications</a></li>
+                        <li><a href="{{ route('admin-profile-index') }}">Profile</a></li>
                     </ul>
                 </div>
                 <div class="col-md-2 greeting">Hello, {{ $admin_user->name }}!</div>

@@ -26,7 +26,7 @@
             @foreach($spare_parts as $part)
                 <tr>
                     <th scope="row">{{ $part->id }}</th>
-                    <td><a href="{{ route('admin-edit-part', ['id' => $part->id]) }}" class="btn btn-primary">Edit</a></td>
+                    <td><a href="{{ route('admin-edit-part', ['id' => $part->id]) }}" class="btn btn-primary {{ $admin_user->role === 'mechanic' ? 'disabled' : '' }}">Edit</a></td>
                     <td><img height="50" src="{{ asset('/storage/images/' . $part->image_name) }}" alt="img"></td>
                     <td>{{ $part->title}}</td>
                     <td>{{ $part->description }}</td>

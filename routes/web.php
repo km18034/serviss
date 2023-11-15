@@ -56,6 +56,10 @@ Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('adm
 Route::get('/admin/logout', [AdminController::class, 'logout'])->name('admin-logout')->middleware('is_admin');
 Route::post('/admin/application/edit-status/{id}', [AdminController::class, 'updateStatus'])->name('admin-update-application-status')->middleware('is_admin');
 Route::post('/admin/delete-application/{id}', [AdminController::class, 'deleteApplication'])->name('admin-delete-application')->middleware('is_admin');
+Route::get('/admin/admin-profile', [AdminController::class, 'profileIndex'])->name('admin-profile-index')->middleware('is_admin');
+Route::get('/admin/admin-edit-profile/{id}', [AdminController::class, 'editProfileIndex'])->name('admin-edit-profile-index')->middleware('is_admin');
+Route::post('/admin/submit-admin-edit-profile/{id}', [AdminController::class, 'updateProfile'])->name('admin-submit-edit-profile')->middleware('is_admin');
+Route::post('/admin/admin-delete-profile/{id}', [AdminController::class, 'deleteProfile'])->name('admin-delete-profile')->middleware('is_admin');
 
 Route::get('/admin/spare-parts', [SparePartsController::class, 'index'])->name('admin-parts-index')->middleware('is_admin');
 Route::get('/admin/add-new-part', [SparePartsController::class, 'addFormIndex'])->name('admin-add-form-index')->middleware('is_admin');

@@ -76,5 +76,59 @@ class AdminController extends BaseController
 
         return redirect('/admin');
     }
+
+    public function profileIndex()
+    {
+        $admin_user = AdminUser::find(session('admin_id'));
+
+        return view('admin.profile')->with(compact([
+            'admin_user',
+        ]));
+    }
+
+    public function editProfileIndex($id)
+    {
+        $admin_user = AdminUser::where("id", $id)->first();
+
+        return view('admin.edit-profile')->with(compact([
+            'admin_user',
+        ]));
+    }
+
+    public function updateProfile(Request $request, $id)
+    {
+        $admin_user = AdminUser::where("id", $id)->first();
+        $admin_user->name = $request->input("name");
+        $admin_user->surname = $request->input("surname");
+        $admin_user->email = $request->input("email");
+        $admin_user->phone = $request->input("phone");
+
+        if ($admin_user->role === 'mechanic') {
+            $admin_user->role = 'mechanic';
+        } else {
+            $admin_user->role = $request->input("role");
+        }
+
+        $password = $request->input("password");
+        
+        if ($password) {
+            $password = password_hash($password, PASSWORD_DEFAULT);
+            $admin_user->password = $password;
+        }
+
+        $admin_user->save();
+
+        return redirect()->route('admin-profile-index')->with('success', 'Profile Updated Successfully!');
+    }
+
+    public function deleteProfile($id)
+    {
+        $admin = AdminUser::where("id", $id)->first();
+        $admin->delete();
+
+        session()->forget('admin_id');
+
+        return redirect('/');
+    }
 }
 
