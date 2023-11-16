@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\AdminUser;
 use App\Models\Application;
+use App\Models\ApplicationSparePart;
+use App\Models\SparePart;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -46,10 +48,12 @@ class AdminController extends BaseController
     {
         $admin_user = AdminUser::find(session('admin_id'));
         $applications = Application::all();
+        $spare_parts = SparePart::where('is_aviable', true)->get();
 
         return view('admin.dashboard')->with(compact([
             'admin_user',
             'applications',
+            'spare_parts'
         ]));
     }
 
@@ -129,6 +133,28 @@ class AdminController extends BaseController
         session()->forget('admin_id');
 
         return redirect('/');
+    }
+
+    public function saveSparePartAmount(Request $request, $id) // $id ir application id
+    {
+        $data = $request->all();
+
+        unset($data['_token']);
+
+        foreach ($data as $partId => $amount) { //$partId ir spare parts id ; $amount ir order amount
+            if (is_null($amount)) {
+                continue;
+            }
+
+            $application_spare_part = new ApplicationSparePart();
+            $application_spare_part->application_id = $id;
+            $application_spare_part->spare_part_id = $partId;
+            $application_spare_part->amount = $amount;
+
+            $application_spare_part->save();
+        }
+
+        return redirect()->route('admin-dashboard');
     }
 }
 

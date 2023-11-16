@@ -60,6 +60,7 @@ Route::get('/admin/admin-profile', [AdminController::class, 'profileIndex'])->na
 Route::get('/admin/admin-edit-profile/{id}', [AdminController::class, 'editProfileIndex'])->name('admin-edit-profile-index')->middleware('is_admin');
 Route::post('/admin/submit-admin-edit-profile/{id}', [AdminController::class, 'updateProfile'])->name('admin-submit-edit-profile')->middleware('is_admin');
 Route::post('/admin/admin-delete-profile/{id}', [AdminController::class, 'deleteProfile'])->name('admin-delete-profile')->middleware('is_admin');
+Route::post('/admin/admin-spare-part-order/{id?}',[AdminController::class, 'saveSparePartAmount'])->name('admin-order-part-amount')->middleware('is_admin');
 
 Route::get('/admin/spare-parts', [SparePartsController::class, 'index'])->name('admin-parts-index')->middleware('is_admin');
 Route::get('/admin/add-new-part', [SparePartsController::class, 'addFormIndex'])->name('admin-add-form-index')->middleware('is_admin');
