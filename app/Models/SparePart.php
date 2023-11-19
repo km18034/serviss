@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class SparePart extends Model
 {
     protected $table = 'spare_parts';
+
+    public function application()
+    {
+        return $this->hasMany(ApplicationSparePart::class, 'application_id', 'id');
+    }
 }

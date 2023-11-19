@@ -27,21 +27,22 @@
                 <tr>
                     <th scope="row">{{ $application->id }}</th>
                     <td>{{ $application->service->title }}</td>
-                    <td>{{ $application->mechanic->name }} {{ $application->mechanic->surname }} <div>{{ $application->mechanic->phone }}</div></td>
+                    <td>{{ $application->mechanic->name }} {{ $application->mechanic->surname }} <div><a href="tel:{{ $application->mechanic->phone }}">{{ $application->mechanic->phone }}</a></div></td>
                     <td>{{ $application->auto_brand }}</td>
                     <td>{{ $application->description }}</td>
                     <td>{{ $application->date }}</td>
                     <td>{{ $application->status }}</td>
                     <td>
-                        <form action="{{ route('delete-application', ['id' => $application->id]) }}" method="POST">
+                        <form action="{{ route('cancle-application', ['id' => $application->id]) }}" method="POST">
                             {{ csrf_field() }}
-                            <button type="submit" class="btn btn-danger" @disabled($application->status !== 'recieved')>Delete</button>
+                            <button type="submit" class="btn btn-secondary" @disabled($application->status !== 'recieved')>Cancle</button>
                         </form>
                     </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
+        {{ $applications->links() }}
         @else
         <h4>You Do Not Have Any Applications Yet!</h4>
         @endif

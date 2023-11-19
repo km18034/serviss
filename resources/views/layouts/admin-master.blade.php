@@ -11,12 +11,13 @@
 <div class="nav-bar admin">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-md-3 logo">
+                <div class="col-md-2 logo">
                     <a href="{{ route('admin-dashboard') }}">Service</a>
                 </div>
-                <div class="main-menu col-md-5 d-flex">
+                <div class="main-menu col-md-6 d-flex">
                     <ul>
                         <li><a href="{{ route('admin-parts-index') }}">Spare Parts</a></li>
+                        <li><a href="{{ route('admin-cars-index') }}">Cars</a></li>
                         <li><a href="{{ route('admin-services-index') }}">Services</a></li>
                         <li><a href="{{ route('admin-users-index') }}">Users</a></li>
                         <li><a href="{{ route('admin-dashboard') }}">Applications</a></li>

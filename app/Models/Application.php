@@ -18,4 +18,14 @@ class Application extends Model
     {
         return $this->belongsTo(AdminUser::class, 'mechanic_id', 'id');
     }
+
+    public function spareParts()
+    {
+        return $this->hasMany(ApplicationSparePart::class, 'application_id', 'id');
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id', 'id');
+    }
 }

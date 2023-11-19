@@ -13,7 +13,7 @@ class SparePartsController extends BaseController
 {
     public function index()
     {
-        $spare_parts = SparePart::all();    // no SparePart modeļa tiek paņemtas visas vērtības
+        $spare_parts = SparePart::paginate(10);    // no SparePart modeļa tiek paņemtas visas vērtības
         $admin_user = AdminUser::find(session('admin_id'));    // pēc admin_id sesijas tiek atrasts administrators, kurš pieslēdzies sistēmai
 
         return view('admin.spare-parts')->with(compact([    // tiek atgriezts spare-parts skats un tiek padoti 2 mainīgie

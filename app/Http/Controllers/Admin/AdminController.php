@@ -47,7 +47,7 @@ class AdminController extends BaseController
     public function dashboard()
     {
         $admin_user = AdminUser::find(session('admin_id'));
-        $applications = Application::all();
+        $applications = Application::orderByDesc('id')->paginate(10);
         $spare_parts = SparePart::where('is_aviable', true)->get();
 
         return view('admin.dashboard')->with(compact([
@@ -64,6 +64,17 @@ class AdminController extends BaseController
 
         $application->save();
         return redirect()->back()->with('success', 'Application Status Updated Successfully!');
+    }
+
+    public function viewApplication($id)
+    {
+        $admin_user = AdminUser::find(session('admin_id'));
+        $application = Application::where('id', $id)->first();
+
+        return view('admin.view-application')->with(compact(
+            'admin_user',
+            'application',
+        ));
     }
 
     public function deleteApplication($id)
@@ -138,11 +149,18 @@ class AdminController extends BaseController
     public function saveSparePartAmount(Request $request, $id) // $id ir application id
     {
         $data = $request->all();
+        /**
+        *  "_token" => "Sgj2ULTNYxgVqzdtohBdraZwdAcOneu4HXN03cwQ"
+        *  1 => null
+        *  2 => null
+        *  3 => null
+        *  4 => 3
+        */
 
-        unset($data['_token']);
+        unset($data['_token']); //ignorējam csrf token. 
 
         foreach ($data as $partId => $amount) { //$partId ir spare parts id ; $amount ir order amount
-            if (is_null($amount)) {
+            if (is_null($amount)) { // ja ir null, tad nekas netiek ssaglabāts
                 continue;
             }
 
@@ -151,10 +169,32 @@ class AdminController extends BaseController
             $application_spare_part->spare_part_id = $partId;
             $application_spare_part->amount = $amount;
 
+            $spare_part = $application_spare_part->sparePart;
+            $spare_part->amount = $spare_part->amount - $amount;
+
+            if ($spare_part->amount < 0) {
+                return redirect()->back() 
+                ->with('error', 'Please choose smaller amount!');
+            }
+
             $application_spare_part->save();
+            $spare_part->save();
         }
 
         return redirect()->route('admin-dashboard');
+    }
+
+    public function filterApplication($id)
+    {
+        $admin_user = AdminUser::where("id", $id)->first();
+        $applications = Application::where("mechanic_id", $id)->orderByDesc('id')->paginate(10);
+        $spare_parts = SparePart::where('is_aviable', true)->get();
+
+        return view('admin.dashboard')->with(compact([
+            'admin_user',
+            'applications',
+            'spare_parts',
+        ]));
     }
 }
 

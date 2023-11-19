@@ -14,7 +14,7 @@ class ApplicationController extends Controller
     {
         $customer_id = session('customer_id');
         $customer = Customer::where("id", $customer_id)->first();
-        $applications = Application::where('customer_id', $customer_id)->get()->all();
+        $applications = Application::where('customer_id', $customer_id)->paginate(10);
 
         return view('public.applications', [
             'applications' => $applications,
@@ -50,11 +50,13 @@ class ApplicationController extends Controller
         return redirect('/applications')->with('success', 'Application Created Successfully!');
     }
 
-    public function delete($id) //funkcija, lai dzestu application
+    public function cancle($id) //funkcija, lai dzestu application
     {
         $application = Application::where('id', $id)->first();
-        $application->delete();
+        $application->status = 'canceled';
+
+        $application->save();
         
-        return redirect()->back()->with('success', 'Application Deleted Successfully!');
+        return redirect()->back()->with('success', 'Application Canceled Successfully!');
     }
 }

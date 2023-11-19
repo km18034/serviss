@@ -43,5 +43,6 @@
             @endforeach
             </tbody>
         </table>
+        {{ $spare_parts->links() }}
     </div>
 @stop
