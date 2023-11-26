@@ -8,14 +8,14 @@
             <h1>Applications list</h1>
             <a href="{{ route('create-application') }}" class="ms-3 action-btn">Create New Application</a>
         </div>
-        @if (!empty($applications))
+        @if (!$applications->isEmpty())
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Service</th>
                     <th scope="col">Mechanic</th>
-                    <th scope="col">Auto Brand</th>
+                    <th scope="col">Auto</th>
                     <th scope="col">Description</th>
                     <th scope="col">Date</th>
                     <th scope="col">Status</th>
@@ -28,7 +28,7 @@
                     <th scope="row">{{ $application->id }}</th>
                     <td>{{ $application->service->title }}</td>
                     <td>{{ $application->mechanic->name }} {{ $application->mechanic->surname }} <div><a href="tel:{{ $application->mechanic->phone }}">{{ $application->mechanic->phone }}</a></div></td>
-                    <td>{{ $application->auto_brand }}</td>
+                    <td>{{ $application->autoModel->brand->title }} {{ $application->autoModel->title }}</td>
                     <td>{{ $application->description }}</td>
                     <td>{{ $application->date }}</td>
                     <td>{{ $application->status }}</td>

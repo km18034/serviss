@@ -23,7 +23,7 @@
 				</div>
       		</div>
 		</div>
-      	@if (!empty($applications))
+      	@if (!$applications->isEmpty())
       	<table class="table">
       	    <thead>
       	        <tr>
@@ -32,10 +32,9 @@
       	            <th scope="col">Service</th>
       	            <th scope="col">Mechanic</th>
       	            <th scope="col">Auto Brand</th>
-      	            <th scope="col">Description</th>
       	            <th scope="col" style="width: 126px;">Date</th>
       	            <th scope="col" style="width: 262px;">Status</th>
-      	            <th scope="col" style="width: 250px;"></th>
+      	            <th scope="col" style="width: 157px;"></th>
       	            @if($admin_user->role !== 'mechanic')
       	            <th scope="col"></th>
       	            @endif
@@ -48,8 +47,13 @@
       	            <td><a href="{{ route('admin-view-application', ['id' => $application->id]) }}" class="btn btn-secondary">View</a></td>
       	            <td>{{ $application->service->title }}</td>
       	            <td>{{ $application->mechanic->name }} {{ $application->mechanic->surname }} <div><a href="tel:{{ $application->mechanic->phone }}">{{ $application->mechanic->phone }}</a></div></td>
-      	            <td>{{ $application->auto_brand }}</td>
-      	            <td>{{ $application->description }}</td>
+					<td>
+						@if($application->autoModel)
+							{{ $application->autoModel->brand->title }} {{ $application->autoModel->title }} 
+						@else
+							-
+						@endif
+					</td>
       	            <td>{{ $application->date }}</td>
       	            <td>
       	              	<form action="{{ route('admin-update-application-status', ['id' => $application->id]) }}" method="POST" class="d-flex justify-content-between">

@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('auto_brand', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->boolean('is_public')->default(false);
-            $table->timestamps();
+        Schema::table('applications', function (Blueprint $table) {
+            $table->unsignedBigInteger('auto_model_id')->unsigned();
+
+            $table->foreign('auto_model_id')->references('id')->on('auto_models')->onDelete('cascade');
         });
     }
 
@@ -28,6 +27,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('auto_brand');
+        Schema::table('applications', function (Blueprint $table) {
+            $table->dropColumn('auto_model_id');
+        });
     }
 };

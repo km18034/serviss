@@ -53,9 +53,9 @@ Admin Routes
 
 Route::get('/admin', [AdminController::class, 'index'])->name('admin-index');
 Route::post('/admin/submit-login', [AdminController::class, 'login'])->name('admin-submit-login');
-Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin-dashboard')->middleware('is_admin');
+Route::get('/admin/dashboard/{id?}', [AdminController::class, 'dashboard'])->name('admin-dashboard')->middleware('is_admin');
 Route::get('/admin/logout', [AdminController::class, 'logout'])->name('admin-logout')->middleware('is_admin');
-Route::post('/admin/application/edit-status/{id}', [AdminController::class, 'updateStatus'])->name('admin-update-application-status')->middleware('is_admin');
+Route::post('/admin/application-edit-status/{id}', [AdminController::class, 'updateStatus'])->name('admin-update-application-status')->middleware('is_admin');
 Route::post('/admin/delete-application/{id}', [AdminController::class, 'deleteApplication'])->name('admin-delete-application')->middleware('is_admin');
 Route::get('/admin/admin-profile', [AdminController::class, 'profileIndex'])->name('admin-profile-index')->middleware('is_admin');
 Route::get('/admin/admin-edit-profile/{id}', [AdminController::class, 'editProfileIndex'])->name('admin-edit-profile-index')->middleware('is_admin');
@@ -64,6 +64,7 @@ Route::post('/admin/admin-delete-profile/{id}', [AdminController::class, 'delete
 Route::post('/admin/admin-spare-part-order/{id?}',[AdminController::class, 'saveSparePartAmount'])->name('admin-order-part-amount')->middleware('is_admin');
 Route::get('/admin/admin-application-view/{id}', [AdminController::class, 'viewApplication'])->name('admin-view-application')->middleware('is_admin');
 Route::post('/admin/admin-filter-application/{id}', [AdminController::class, 'filterApplication'])->name('admin-filter-application-by-me')->middleware('is_admin');
+Route::get('/admin/history', [AdminController::class, 'history'])->name('admin-history')->middleware('is_admin');
 
 Route::get('/admin/spare-parts', [SparePartsController::class, 'index'])->name('admin-parts-index')->middleware('is_admin');
 Route::get('/admin/add-new-part', [SparePartsController::class, 'addFormIndex'])->name('admin-add-form-index')->middleware('is_admin');
@@ -73,8 +74,15 @@ Route::get('/admin/edit-part/{id}', [SparePartsController::class, 'editIndex'])-
 Route::post('/admin/submit-edit-part/{id}', [SparePartsController::class, 'update'])->name('admin-submit-edit-part')->middleware('is_admin');
 
 Route::get('/admin/cars', [CarsController::class, 'index'])->name('admin-cars-index')->middleware('is_admin');
-Route::get('admin/add-new-auto-brand', [CarsController::class, 'addBrandFormIndex'])->name('admin-add-brand-form-index')->middleware('is_admin');
-Route::get('admin/add-new-auto-model', [CarsController::class, 'addModelFormIndex'])->name('admin-add-model-form-index')->middleware('is_admin');
+Route::get('/admin/auto-brand', [CarsController::class, 'autoBrandsIndex'])->name('admin-auto-brands-index')->middleware('is_admin');
+Route::get('/admin/edit-auto-brand/{id}', [CarsController::class, 'brandEditIndex'])->name('admin-auto-brands-edit-index')->middleware('is_admin');
+Route::post('/admin/submit-edit-auto-brand/{id}', [CarsController::class, 'updateBrand'])->name('admin-submit-edit-brand')->middleware('is_admin');
+Route::get('/admin/add-new-auto-brand', [CarsController::class, 'addBrandFormIndex'])->name('admin-add-brand-form-index')->middleware('is_admin');
+Route::get('/admin/add-new-auto-model', [CarsController::class, 'addModelFormIndex'])->name('admin-add-model-form-index')->middleware('is_admin');
+Route::post('/admin/submit-auto-brand', [CarsController::class, 'createAutoBrand'])->name('admin-submit-auto-brand')->middleware('is_admin');
+Route::post('/admin/submit-auto-model', [CarsController::class, 'createAutoModel'])->name('admin-submit-auto-model')->middleware('is_admin');
+Route::get('/admin/edit-car/{id}', [CarsController::class, 'editIndex'])->name('admin-edit-car')->middleware('is_admin');
+Route::post('/admin/submit-edit-car/{id}', [CarsController::class, 'update'])->name('admin-submit-edit-car')->middleware('is_admin');
 
 Route::get('/admin/services', [ServicesController::class, 'index'])->name('admin-services-index')->middleware('is_admin');
 Route::get('/admin/add-new-service', [ServicesController::class, 'addFormIndex'])->name('admin-add-form-index-service')->middleware('is_admin');

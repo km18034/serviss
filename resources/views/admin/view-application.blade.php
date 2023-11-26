@@ -2,7 +2,7 @@
 @section('content')
     <div class="container">
         <div class="d-flex align-items-center">
-            <a href="{{ route('admin-dashboard') }}" class="me-3 action-btn">Back</a>
+            <button onclick="history.back()" class="me-3 action-btn">Back</button>
             <h1>Application Info</h1>
         </div>
         <div class="col-md-6 profile">
@@ -24,7 +24,13 @@
             </div>
             <div class="row">
                 <div class="col-6"><div class="label">Auto Brand</div></div>
-                <div class="col-6">{{ $application->auto_brand }}</div>
+                <div class="col-6">
+                    @if($application->autoModel)
+						{{ $application->autoModel->brand->title }} {{ $application->autoModel->title }} 
+					@else
+						-
+					@endif
+                </div>
             </div>
             <div class="row">
                 <div class="col-6"><div class="label">Description</div></div>

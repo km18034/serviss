@@ -12,7 +12,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-2 logo">
-                    <a href="{{ route('admin-dashboard') }}">Service</a>
+                    <a href="{{ route('admin-history') }}">Service</a>
                 </div>
                 <div class="main-menu col-md-6 d-flex">
                     <ul>

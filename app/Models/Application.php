@@ -28,4 +28,9 @@ class Application extends Model
     {
         return $this->belongsTo(Customer::class, 'customer_id', 'id');
     }
+
+    public function autoModel()
+    {
+        return $this->belongsTo(AutoModel::class, 'auto_model_id', 'id');
+    }
 }

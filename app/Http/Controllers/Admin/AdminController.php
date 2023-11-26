@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\ActionLog;
 use App\Models\AdminUser;
 use App\Models\Application;
 use App\Models\ApplicationSparePart;
 use App\Models\SparePart;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Action;
 use Illuminate\Routing\Controller as BaseController;
 
 class AdminController extends BaseController
@@ -44,10 +46,17 @@ class AdminController extends BaseController
         }
     }
 
-    public function dashboard()
+    public function dashboard(int $id = null)
     {
-        $admin_user = AdminUser::find(session('admin_id'));
-        $applications = Application::orderByDesc('id')->paginate(10);
+        if ($id) {
+            $admin_user = AdminUser::find($id);
+            $applications = Application::where("mechanic_id", $id)->orderByDesc('id')->paginate(10);
+
+        } else {
+            $admin_user = AdminUser::find(session('admin_id'));
+            $applications = Application::orderByDesc('id')->paginate(10);
+        }
+        
         $spare_parts = SparePart::where('is_aviable', true)->get();
 
         return view('admin.dashboard')->with(compact([
@@ -59,11 +68,23 @@ class AdminController extends BaseController
 
     public function updateStatus(Request $request, $id)
     {
+        $admin_user = AdminUser::find(session('admin_id'));
         $application = Application::find($id);
         $application->status = $request->input('status');
 
         $application->save();
-        return redirect()->back()->with('success', 'Application Status Updated Successfully!');
+
+        $history = new ActionLog();
+        $history->name = $admin_user->name;
+        $history->surname = $admin_user->surname;
+        $history->phone = $admin_user->phone;
+        $history->action = $request->input('status');
+        $history->application_id = $application->id;
+
+        $history->save();
+
+        return redirect()->route('admin-dashboard', ['id' => $admin_user->id])
+        ->with('success', 'Application Status Updated Successfully!');
     }
 
     public function viewApplication($id)
@@ -190,10 +211,21 @@ class AdminController extends BaseController
         $applications = Application::where("mechanic_id", $id)->orderByDesc('id')->paginate(10);
         $spare_parts = SparePart::where('is_aviable', true)->get();
 
-        return view('admin.dashboard')->with(compact([
+        return redirect()->route('admin-dashboard', ['id' => $id])->with(compact([
             'admin_user',
             'applications',
             'spare_parts',
+        ]));
+    }
+
+    public function history()
+    {
+        $admin_user = AdminUser::find(session('admin_id'));
+        $actions = ActionLog::orderByDesc('id')->paginate(10);
+
+        return view('admin.history')->with(compact([
+            'admin_user',
+            'actions',
         ]));
     }
 }
