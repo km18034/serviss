@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\AdminUser;
+use App\Models\AutoModel;
 use App\Models\SparePart;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -25,9 +26,11 @@ class SparePartsController extends BaseController
     public function addFormIndex()
     {
         $admin_user = AdminUser::find(session('admin_id'));     //  pēc admin_id sesijas tiek atrasts administrators, kurš pieslēdzies sistēmai
+        $cars = AutoModel::where("is_public", true)->get();
 
         return view('admin.add-spare-part')->with(compact([     // tiek atgriezts add-spare-part skats un tiek padots 1 mainīgais
             'admin_user',
+            'cars',
         ]));
     }
 
@@ -35,10 +38,12 @@ class SparePartsController extends BaseController
     {
         $part = SparePart::find($id);   // SparePart DB tiek meklēts ieraksts ar konkrētu id
         $admin_user = AdminUser::find(session('admin_id')); //  pēc admin_id sesijas tiek atrasts administrators, kurš pieslēdzies sistēmai
+        $cars = AutoModel::where("is_public", true)->get();
 
         return view('admin.edit-spare-part')->with(compact([    // tiek atgriezts edit-spare-part skats un tiek padoti 2 mainīgie
             'part',
             'admin_user',
+            'cars',
         ]));
     }
 
@@ -48,7 +53,7 @@ class SparePartsController extends BaseController
         $request->validate([       // tiek validēti ievades lauki
             'title' => 'required|max:255',
             'description' => 'required',
-            'auto_brand' => 'required',
+            'auto_model_id' => 'required',
             'amount' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg|max:2048', 
         ]);
@@ -63,7 +68,7 @@ class SparePartsController extends BaseController
         $part = New SparePart();    // tiek izveidots jauns ieraksts 
         $part->title = $request->input('title'); // title kolonnā tiek piešķirta vērtība no title ievadlauka
         $part->description = $request->input('description');    // description kolonnā tiek piešķirta vērtība no description ievadlauka
-        $part->auto_brand = $request->input('auto_brand');     // auto_brand kolonnā tiek piešķirta vērtība no auto_brand ievadlauka
+        $part->auto_model_id = $request->input('auto_model_id');     // auto_brand kolonnā tiek piešķirta vērtība no auto_brand ievadlauka
         $part->amount = $request->input('amount');     // amount kolonnā tiek piešķirta vērtība no amount ievadlauka
         $part->is_aviable = $is_aviable;    // is_aviable kolonnā tiek piešķirta vērtība no is_aviable ievadlauka
         $part->image_name = $file_name;     // image_name kolonnā saglabājam faila nosaukumu
@@ -99,7 +104,7 @@ class SparePartsController extends BaseController
 
             $part->title = $request->input('title'); //  kolonnā (DB spare_parts) title tiek piešķirta vērtība no ievadlauka title 
             $part->description = $request->input('description'); // kolonnā description tiek piešķirta vērtība no ievadlauka description
-            $part->auto_brand = $request->input('auto_brand'); // kolonnā auto_brand tiek piešķirta vērtība no ievadlauka auto_brand
+            $part->auto_model_id = $request->input('auto_model_id'); // kolonnā auto_model_id tiek piešķirta vērtība no ievadlauka auto_model_id
             $part->is_aviable = $is_aviable; // kolonnā is_aviable tiek piešķirta is_aviable ,mainīgā vērtība
         }
 

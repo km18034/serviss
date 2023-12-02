@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\AutoModel;
 use App\Models\Service;
 use App\Models\Application;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ApplicationController extends Controller
@@ -30,12 +31,17 @@ class ApplicationController extends Controller
         $services = Service::where("is_public", true)->get();
         $cars = AutoModel::where("is_public", true)->get();
         $mechanics = AdminUser::where("role", 'mechanic')->get();
+
+        $tomorrow = Carbon::now()->addDay()->toDateString();
+        $month_later = Carbon::now()->addMonth()->toDateString();
         
         return view('public.create-application')->with(compact([
             'customer',
             'services',
             'mechanics',
             'cars',
+            'tomorrow',
+            'month_later',
         ]));
     }
 

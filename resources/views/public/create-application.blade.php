@@ -35,9 +35,9 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="form-group my-2">
+                <div class="form-group my-3">
                     <label>Date</label>
-                    <input type="date" class="form-control" name="date">
+                        <input type="date" name="date" min="{{ $tomorrow }}" max="{{ $month_later }}" class="form-control" placeholder="Enter Date">
                 </div>
                 <div class="form-group my-2">
                     <label>Description</label>

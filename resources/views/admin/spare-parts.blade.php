@@ -30,7 +30,13 @@
                     <td><img height="50" src="{{ asset('/storage/images/' . $part->image_name) }}" alt="img"></td>
                     <td>{{ $part->title}}</td>
                     <td>{{ $part->description }}</td>
-                    <td>{{ $part->auto_brand }}</td>
+                    <td>
+						@if($part->autoModel)
+							{{ $part->autoModel->brand->title }} {{ $part->autoModel->title }} 
+						@else
+							-
+						@endif
+					</td>
                     <td>{{ $part->amount }}</td>
                     <td>{{ $part->is_aviable }}</td>
                     <td>

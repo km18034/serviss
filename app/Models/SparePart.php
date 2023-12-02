@@ -12,4 +12,9 @@ class SparePart extends Model
     {
         return $this->hasMany(ApplicationSparePart::class, 'application_id', 'id');
     }
+
+    public function autoModel()
+    {
+        return $this->belongsTo(AutoModel::class, 'auto_model_id', 'id'); 
+    }
 }

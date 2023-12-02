@@ -30,8 +30,13 @@
                     <input type="text" class="form-control" rows="3" name="description">
                 </div>
                 <div class="form-group my-2">
-                    <label>Auto Brand</label>
-                    <input type="text" class="form-control" placeholder="Enter Auto Brand" name="auto_brand">
+                    <label>Auto</label>
+                    <select class="form-select" name="auto_model_id">
+                        <option selected value="">Select Auto</option>
+                        @foreach($cars as $car)
+                            <option value="{{ $car->id }}">{{ $car->brand->title }} {{ $car->title }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group my-2">
                     <label>Amount</label>
